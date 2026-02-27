@@ -17,7 +17,8 @@ import {
   Linkedin,
   Github,
   Star,
-  Check
+  Check,
+  X
 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState, useEffect, useRef, FormEvent } from 'react';
@@ -25,6 +26,7 @@ import emailjs from '@emailjs/browser';
 
 export default function App() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
@@ -98,10 +100,27 @@ export default function App() {
           </div>
         </div>
         
-        <button className="md:hidden text-white hover:text-[#e81d25]">
-          <Menu className="w-6 h-6" />
+        <button 
+          className="md:hidden text-white hover:text-[#e81d25] z-50"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`fixed inset-0 bg-black z-40 transition-transform duration-500 md:hidden ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="flex flex-col items-center justify-center h-full gap-8 text-xl font-bold uppercase tracking-widest">
+          <a href="#about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#e81d25] transition-colors">About Us</a>
+          <a href="#services" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#e81d25] transition-colors">Expertise</a>
+          <a href="#work" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#e81d25] transition-colors">Portfolio</a>
+          <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-[#e81d25] transition-colors">Contact</a>
+          <div className="flex gap-6 mt-4">
+            <a href="https://www.linkedin.com/in/vaistnavkumar" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#e81d25] transition-colors"><Linkedin className="w-6 h-6" /></a>
+            <a href="https://github.com/vaistnavkumar" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-[#e81d25] transition-colors"><Github className="w-6 h-6" /></a>
+          </div>
+        </div>
+      </div>
 
       {/* Hero Section */}
       <header className="relative min-h-[90vh] flex items-center px-6 md:px-12 pt-20 overflow-hidden">
@@ -145,13 +164,13 @@ export default function App() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
-            className="lg:col-span-5 relative h-[60vh] lg:h-[70vh] w-full"
+            className="lg:col-span-5 relative h-[50vh] md:h-[60vh] lg:h-[70vh] w-full"
           >
             <div className="relative w-full h-full rounded-sm overflow-hidden border border-white/10 group bg-[#111] flex items-center justify-center">
               <img 
                 src="https://hoirqrkdgbmvpwutwuwj.supabase.co/storage/v1/object/public/assets/assets/fb1e2a60-7211-4eff-8f08-c2bc3a8bec44_800w.webp" 
                 alt="VaistnavKumar" 
-                className="max-w-full max-h-full object-contain transition-all duration-700 opacity-100 group-hover:scale-105"
+                className="w-full h-full object-cover object-center transition-all duration-700 opacity-100 group-hover:scale-105"
               />
             </div>
           </motion.div>
